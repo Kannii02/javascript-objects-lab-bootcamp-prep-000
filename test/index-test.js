@@ -1,5 +1,4 @@
 const { expect } = require('chai');
-
 const {
   updateEmployeeWithKeyAndValue,
   destructivelyUpdateEmployeeWithKeyAndValue,
@@ -7,82 +6,48 @@ const {
   destructivelyDeleteFromEmployeeByKey,
 } = require('../index');
 
-/*global describe, it */
-
 describe('Objects', function () {
   describe('updateEmployeeWithKeyAndValue(object, key, value)', function () {
     it('returns an object with the original key-value pairs and the new key-value pair', function () {
-      const obj = { prop: 1 };
-
-      expect(updateEmployeeWithKeyAndValue(obj, 'prop2', 2)).to.deep.equal({
-        prop: 1,
-        prop2: 2,
-      });
+      const employee = { name: 'Sam', streetAddress: '11 Broadway' };
+      const updatedEmployee = updateEmployeeWithKeyAndValue(employee, 'streetAddress', '12 Broadway');
+      expect(updatedEmployee).to.eql({ name: 'Sam', streetAddress: '12 Broadway' });
     });
 
-    it('does not modify the original object, but rather returns a clone with the new data', function () {
-      const obj = { prop: 1 };
-
-      updateEmployeeWithKeyAndValue(obj, 'prop2', 2);
-
-      expect(obj['prop2']).to.equal(undefined);
-    });
-
-    it('returns an object with an updated key-value pair', function () {
-      const obj = { prop: 'old value' };
-
-      const newObj = updateEmployeeWithKeyAndValue(obj, 'prop', 'new value');
-
-      expect(newObj['prop']).to.equal('new value');
+    it('does not modify the original object', function () {
+      const employee = { name: 'Sam', streetAddress: '11 Broadway' };
+      updateEmployeeWithKeyAndValue(employee, 'streetAddress', '12 Broadway');
+      expect(employee.streetAddress).to.equal('11 Broadway');
     });
   });
 
   describe('destructivelyUpdateEmployeeWithKeyAndValue(object, key, value)', function () {
-    it('updates `object` with the given `key` and `value` (it is destructive) and returns the entire updated object', function () {
-      const obj = { prop: 1 };
-
-      expect(destructivelyUpdateEmployeeWithKeyAndValue(obj, 'prop2', 2)).to.deep.equal({
-        prop: 1,
-        prop2: 2,
-      });
-
-      expect(obj).to.deep.equal({
-        prop: 1,
-        prop2: 2,
-      });
+    it('updates the object destructively and returns the updated object', function () {
+      const employee = { name: 'Sam', streetAddress: '11 Broadway' };
+      const updatedEmployee = destructivelyUpdateEmployeeWithKeyAndValue(employee, 'streetAddress', '12 Broadway');
+      expect(updatedEmployee).to.eql({ name: 'Sam', streetAddress: '12 Broadway' });
     });
   });
 
   describe('deleteFromEmployeeByKey(object, key)', function () {
-    it('deletes `key` from a clone of object and returns the new object (it is non-destructive)', function () {
-      const obj = { prop: 1 };
-      const newObj = deleteFromEmployeeByKey(obj, 'prop');
-
-      expect(newObj['prop']).to.equal(undefined);
+    it('deletes the key non-destructively and returns a new object', function () {
+      const employee = { name: 'Sam', streetAddress: '11 Broadway' };
+      const updatedEmployee = deleteFromEmployeeByKey(employee, 'streetAddress');
+      expect(updatedEmployee).to.eql({ name: 'Sam' });
     });
 
-    it('does not modify the original object (it is non-destructive)', function () {
-      const obj = { prop: 1 };
-
-      deleteFromEmployeeByKey(obj, 'prop');
-      expect(obj['prop']).to.equal(1);
+    it('does not modify the original object', function () {
+      const employee = { name: 'Sam', streetAddress: '11 Broadway' };
+      deleteFromEmployeeByKey(employee, 'streetAddress');
+      expect(employee.streetAddress).to.equal('11 Broadway');
     });
   });
 
   describe('destructivelyDeleteFromEmployeeByKey(object, key)', function () {
-    it('returns object without the deleted key/value pair', function () {
-      const obj = { prop: 1 };
-      destructivelyDeleteFromEmployeeByKey(obj, 'prop');
-
-      expect(obj['prop']).to.equal(undefined);
-    });
-
-    it('modifies the original object', function () {
-      const obj = { prop: 1 };
-      destructivelyDeleteFromEmployeeByKey(obj, 'prop');
-
-      expect(obj['prop']).to.equal(undefined);
+    it('deletes the key destructively and modifies the original object', function () {
+      const employee = { name: 'Sam', streetAddress: '11 Broadway' };
+      destructivelyDeleteFromEmployeeByKey(employee, 'streetAddress');
+      expect(employee.streetAddress).to.be.undefined;
     });
   });
 });
-

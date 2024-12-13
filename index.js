@@ -1,6 +1,6 @@
 const employee = {
-    name: "Margie",
-    streetAddress: "123 Main Street",
+    name: "Sam",
+    streetAddress: "11 Broadway",
   };
   
   function updateEmployeeWithKeyAndValue(employee, key, value) {
