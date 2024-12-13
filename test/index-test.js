@@ -1,79 +1,88 @@
+const { expect } = require('chai');
+
+const {
+  updateEmployeeWithKeyAndValue,
+  destructivelyUpdateEmployeeWithKeyAndValue,
+  deleteFromEmployeeByKey,
+  destructivelyDeleteFromEmployeeByKey,
+} = require('../index');
+
 /*global describe, it */
 
-describe('Objects', function() {
-  describe('updateObjectWithKeyAndValue(object, key, value)', function() {
-    it('returns an object with the orignal key value pairs and the new key value pair', function() {
-      var obj = { prop: 1 }
+describe('Objects', function () {
+  describe('updateEmployeeWithKeyAndValue(object, key, value)', function () {
+    it('returns an object with the original key-value pairs and the new key-value pair', function () {
+      const obj = { prop: 1 };
 
-      expect(updateObjectWithKeyAndValue(obj, 'prop2', 2)).toMatch({
+      expect(updateEmployeeWithKeyAndValue(obj, 'prop2', 2)).to.deep.equal({
         prop: 1,
-        prop2: 2
-      })
-    })
+        prop2: 2,
+      });
+    });
 
-    it('does not modify the original object, but rather returns a clone with the new data', function() {
-      var obj = { prop: 1 }
+    it('does not modify the original object, but rather returns a clone with the new data', function () {
+      const obj = { prop: 1 };
 
-      updateObjectWithKeyAndValue(obj, 'prop2', 2)
+      updateEmployeeWithKeyAndValue(obj, 'prop2', 2);
 
-      expect(obj['prop2']).toBe(undefined)
-    })
-    
-    it('returns an object with an updated key value pair', function() {
-      var obj = { prop: 'old value' }
+      expect(obj['prop2']).to.equal(undefined);
+    });
 
-      var newObj = updateObjectWithKeyAndValue(obj, 'prop', 'new value')
+    it('returns an object with an updated key-value pair', function () {
+      const obj = { prop: 'old value' };
 
-      expect(newObj['prop']).toBe('new value')
-    })
-  })
+      const newObj = updateEmployeeWithKeyAndValue(obj, 'prop', 'new value');
 
-  describe('destructivelyUpdateObjectWithKeyAndValue(object, key, value)', function() {
-    it('updates `object` with the given `key` and `value` (it is destructive) and returns the entire updated object', function() {
-      var obj = { prop: 1 }
+      expect(newObj['prop']).to.equal('new value');
+    });
+  });
 
-      expect(destructivelyUpdateObjectWithKeyAndValue(obj, 'prop2', 2)).toMatch({
+  describe('destructivelyUpdateEmployeeWithKeyAndValue(object, key, value)', function () {
+    it('updates `object` with the given `key` and `value` (it is destructive) and returns the entire updated object', function () {
+      const obj = { prop: 1 };
+
+      expect(destructivelyUpdateEmployeeWithKeyAndValue(obj, 'prop2', 2)).to.deep.equal({
         prop: 1,
-        prop2: 2
-      })
+        prop2: 2,
+      });
 
-      expect(obj).toMatch({
+      expect(obj).to.deep.equal({
         prop: 1,
-        prop2: 2
-      })
-    })
-  })
+        prop2: 2,
+      });
+    });
+  });
 
-  describe('deleteFromObjectByKey(object, key)', function() {
-    it('deletes `key` from a clone of object and returns the new object (it is non-destructive)', function() {
-      var obj = { prop: 1 }
-      var newObj = deleteFromObjectByKey(obj, 'prop')
+  describe('deleteFromEmployeeByKey(object, key)', function () {
+    it('deletes `key` from a clone of object and returns the new object (it is non-destructive)', function () {
+      const obj = { prop: 1 };
+      const newObj = deleteFromEmployeeByKey(obj, 'prop');
 
-      expect(newObj['prop']).toBe(undefined)
-    })
+      expect(newObj['prop']).to.equal(undefined);
+    });
 
-    it('does not modify the original object (it is non-destructive)', function() {
-      var obj = { prop: 1 }
+    it('does not modify the original object (it is non-destructive)', function () {
+      const obj = { prop: 1 };
 
-      deleteFromObjectByKey(obj, 'prop')
-      expect(obj['prop']).toBe(1)
-    })
-  })
+      deleteFromEmployeeByKey(obj, 'prop');
+      expect(obj['prop']).to.equal(1);
+    });
+  });
 
-  describe('destructivelyDeleteFromObjectByKey(object, key)', function() {
-    it('returns object without the delete key/value pair', function() {
-      var obj = { prop: 1 }
-      var newObj = destructivelyDeleteFromObjectByKey(obj, 'prop');
+  describe('destructivelyDeleteFromEmployeeByKey(object, key)', function () {
+    it('returns object without the deleted key/value pair', function () {
+      const obj = { prop: 1 };
+      destructivelyDeleteFromEmployeeByKey(obj, 'prop');
 
-      expect(newObj['prop']).toBe(undefined)
-    })
+      expect(obj['prop']).to.equal(undefined);
+    });
 
-    it('modifies the original object', function() {
-      var obj = { prop: 1 }
-      var newObj = destructivelyDeleteFromObjectByKey(obj, 'prop');
+    it('modifies the original object', function () {
+      const obj = { prop: 1 };
+      destructivelyDeleteFromEmployeeByKey(obj, 'prop');
 
-      expect(obj['prop']).toBe(undefined)
-    })
-  })
+      expect(obj['prop']).to.equal(undefined);
+    });
+  });
+});
 
-})
